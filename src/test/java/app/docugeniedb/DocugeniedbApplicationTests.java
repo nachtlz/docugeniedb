@@ -1,4 +1,4 @@
-package docugeniedb;
+package app.docugeniedb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
