@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,8 +22,14 @@ public class Person {
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    private List<File> files;
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    private List<Chat> chats;
 }
