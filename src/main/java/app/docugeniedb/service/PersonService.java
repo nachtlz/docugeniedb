@@ -10,6 +10,8 @@ public interface PersonService {
 
     PersonDTO getPersonById(Long personId);
 
+    PersonDTO getPersonByUsername(String username);
+
     List<PersonDTO> getAllPersons();
 
     PersonDTO updatePerson(Long personId, PersonDTO updatedPerson);

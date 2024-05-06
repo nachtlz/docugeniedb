@@ -16,16 +16,27 @@ public class PersonController {
 
     private PersonService personService;
 
+    public record PersonResponseDTO(Long id, String username) {
+    }
+
     @PostMapping
-    public ResponseEntity<PersonDTO> createPerson(@RequestBody PersonDTO personDTO) {
+    public ResponseEntity<PersonResponseDTO> createPerson(@RequestBody PersonDTO personDTO) {
         PersonDTO savedPersonDTO = personService.createPerson(personDTO);
-        return new ResponseEntity<>(savedPersonDTO, HttpStatus.CREATED);
+        PersonResponseDTO personResponseDTO = new PersonResponseDTO(savedPersonDTO.getPerson_id(), savedPersonDTO.getUsername());
+        return new ResponseEntity<>(personResponseDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<PersonDTO> getPersonById(@PathVariable("id") Long personId) {
         PersonDTO savedPersonDTO = personService.getPersonById(personId);
         return ResponseEntity.ok(savedPersonDTO);
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<PersonResponseDTO> getPersonByUsername(@PathVariable("username") String username) {
+        PersonDTO personDTO = personService.getPersonByUsername(username);
+        PersonResponseDTO personResponseDTO = new PersonResponseDTO(personDTO.getPerson_id(), personDTO.getUsername());
+        return ResponseEntity.ok(personResponseDTO);
     }
 
     @GetMapping
