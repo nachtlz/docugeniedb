@@ -8,8 +8,6 @@ import app.docugeniedb.repository.PersonRepository;
 import app.docugeniedb.service.PersonService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +21,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public PersonDTO createPerson(PersonDTO personDTO) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
         Person person = PersonMapper.mapToPerson(personDTO);
-        person.setPassword(encoder.encode(person.getPassword()));
         Person savedPerson = personRepository.save(person);
         return PersonMapper.mapToPersonDTO(savedPerson);
     }
