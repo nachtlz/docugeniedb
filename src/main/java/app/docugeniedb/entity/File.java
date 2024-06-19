@@ -36,4 +36,7 @@ public class File {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id", nullable = false)
     private Person person;
+
+    @ManyToMany(mappedBy = "files")
+    private Set<Chat> chats;
 }

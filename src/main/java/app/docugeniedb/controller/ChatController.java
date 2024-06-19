@@ -52,15 +52,19 @@ public class ChatController {
         return ResponseEntity.ok("Chat deleted successfully!");
     }
 
-    @GetMapping("{idChat}/file/{idFile}")
-    public ResponseEntity<String> addFileToChat(@PathVariable("idChat") Long chatId, @PathVariable("idFile") Long fileId) {
-        chatService.addFileToChat(chatId, fileId);
-        return ResponseEntity.ok("File added to chat successfully!");
+    @PostMapping("{idChat}/file")
+    public ResponseEntity<String> addFilesToChat(@PathVariable("idChat") Long chatId, @RequestParam List<Long> fileIds) {
+        for (Long fileId : fileIds) {
+            chatService.addFileToChat(chatId, fileId);
+        }
+        return ResponseEntity.ok("Files added to chat successfully!");
     }
 
-    @DeleteMapping("{idChat}/file/{idFile}")
-    public ResponseEntity<String> deleteFileToChat(@PathVariable("idChat") Long chatId, @PathVariable("idFile") Long fileId) {
-        chatService.deleteFileToChat(chatId, fileId);
-        return ResponseEntity.ok("File deleted from chat successfully!");
+    @DeleteMapping("{idChat}/file")
+    public ResponseEntity<String> deleteFilesFromChat(@PathVariable("idChat") Long chatId, @RequestParam List<Long> fileIds) {
+        for (Long fileId : fileIds) {
+            chatService.deleteFileToChat(chatId, fileId);
+        }
+        return ResponseEntity.ok("Files deleted from chat successfully!");
     }
 }

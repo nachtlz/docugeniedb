@@ -3,12 +3,15 @@ package app.docugeniedb.mapper;
 import app.docugeniedb.dto.ChatDTO;
 import app.docugeniedb.dto.FileDTO;
 import app.docugeniedb.dto.MessageDTO;
+import app.docugeniedb.dto.PersonDTO;
 import app.docugeniedb.entity.Chat;
 import app.docugeniedb.entity.File;
 import app.docugeniedb.entity.Message;
 
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,8 +40,18 @@ public class ChatMapper {
     }
 
     public static Chat mapToChat(ChatDTO chatDTO) {
-        List<Message> messageList = chatDTO.getMessages().stream().map(MessageMapper::mapToMessage).toList();
-        Set<File> fileSet = chatDTO.getFiles().stream().map(FileMapper::mapToFile).collect(Collectors.toSet());
+        List<Message> messageList = Optional.ofNullable(chatDTO)
+                .map(ChatDTO::getMessages)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(MessageMapper::mapToMessage)
+                .toList();
+        Set<File> fileSet = Optional.ofNullable(chatDTO)
+                .map(ChatDTO::getFiles)
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(FileMapper::mapToFile)
+                .collect(Collectors.toSet());
         return new Chat(
                 chatDTO.getChat_id(),
                 chatDTO.getName(),

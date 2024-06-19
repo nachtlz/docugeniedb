@@ -58,7 +58,7 @@ public class Chat {
     @Column(name = "orientation")
     private String orientation;
 
-    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
     @ManyToOne(fetch = FetchType.LAZY)

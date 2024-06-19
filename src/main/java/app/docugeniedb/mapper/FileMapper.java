@@ -28,6 +28,7 @@ public class FileMapper {
                 fileDTO.getFilepath(),
                 fileDTO.getDescription(),
                 fileDTO.getCategory(),
+                null,
                 null
         );
     }

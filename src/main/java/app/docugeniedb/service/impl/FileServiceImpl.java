@@ -2,10 +2,12 @@ package app.docugeniedb.service.impl;
 
 import app.docugeniedb.dto.FileDTO;
 import app.docugeniedb.dto.PersonDTO;
+import app.docugeniedb.entity.Chat;
 import app.docugeniedb.entity.File;
 import app.docugeniedb.exception.ResourceNotFoundException;
 import app.docugeniedb.mapper.FileMapper;
 import app.docugeniedb.mapper.PersonMapper;
+import app.docugeniedb.repository.ChatRepository;
 import app.docugeniedb.repository.FileRepository;
 import app.docugeniedb.service.FileService;
 import app.docugeniedb.service.PersonService;
@@ -20,6 +22,8 @@ import java.util.List;
 public class FileServiceImpl implements FileService {
 
     private FileRepository fileRepository;
+
+    private ChatRepository chatRepository;
 
     private PersonService personService;
 
@@ -72,9 +76,13 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public void deleteFile(Long fileId) {
-        fileRepository.findById(fileId)
+        File file = fileRepository.findById(fileId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("File does not exist with given id: " + fileId));
+        for (Chat chat : file.getChats()) {
+            chat.getFiles().remove(file);
+        }
+        chatRepository.saveAll(file.getChats());
         fileRepository.deleteById(fileId);
     }
 }
